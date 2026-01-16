@@ -47,6 +47,7 @@ document.querySelector('#translate').addEventListener('click', async () => {
 const microphone = document.getElementById('microphone')
 const inputText = document.getElementById('inputText')
 const msg = document.querySelector('.msg')
+const copyIcon = document.querySelector('.copy')
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
@@ -110,14 +111,28 @@ if (!SpeechRecognition) {
 }
 
 function copy() {
-    const value = document.getElementById('inputTranslated').value // pega valor do input
-    navigator.clipboard.writeText(value).then(() => { // copia valor
+    const inputTranslated = document.getElementById('inputTranslated').value // pega valor do input
+
+    if (!inputTranslated) { // caso o textarea esteja vazio...
+            msg.classList.add('active')
+            msg.style.color = '#cf3939'
+            msg.textContent = 'Vazio'
+            
+            setTimeout(() => {
+                msg.classList.remove('active')
+            }, 2000)
+            return
+    }
+    
+    navigator.clipboard.writeText(inputTranslated).then(() => { // copia valor do textarea
         msg.classList.add('active')
         msg.textContent = 'Texto copiado'
+        copyIcon.style.color = '#008156'
         msg.style.color = '#008156'
 
         setTimeout(() => {
             msg.classList.remove('active')
-        }, 3000);
+            copyIcon.style.color = ''
+        }, 2000);
     })
 }
