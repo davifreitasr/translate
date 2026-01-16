@@ -45,9 +45,10 @@ document.querySelector('#translate').addEventListener('click', async () => {
 
 
 
-
+// mic mode
 const microphone = document.getElementById('microphone')
 const inputText = document.getElementById('inputText')
+const warningMessage = document.getElementById('warningMessage')
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
@@ -65,6 +66,7 @@ if (!SpeechRecognition) {
 
     microphone.addEventListener('click', () => {
         if (!listering) {
+            microphone.classList.add('active')
             recognition.start()
         } else {
             recognition.stop()
@@ -84,6 +86,8 @@ if (!SpeechRecognition) {
         inputText.value = transcript.trim()
     }
     recognition.onerror = (e) => {
-        console.log('Speech error', e.error)
+        microphone.classList.remove('active')
+        warningMessage.style.color = 'red'
+        warningMessage.innerHTML = 'Não foi possível fazer a transcrição de áudio. Tente novamente'
     }
 }
