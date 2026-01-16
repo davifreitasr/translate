@@ -71,3 +71,7 @@ body {
 .msg.active {
     opacity: 1;
 }
+
+.copyright::after {
+    animation: blink 2000ms infinite linear;
+}
