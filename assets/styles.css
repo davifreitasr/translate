@@ -3,30 +3,46 @@
 :root {
     --primary1: #364153;
     --primary2: #465469;
+    --primary3: #3a4557;
+    --scrollbar-thumb: #303b4e;
     --white: #fff;
     --border: #ccc;
+    --border-mic: #008156;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--white);
 }
 
 * {
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .translate, .microphone {
-    background-color: var(--primary1);
     padding: .5rem;
-    border: 2px solid transparent;
+    border: 1px solid var(--primary3);
     border-radius: 50%;
-    transition: background 300ms ease, color 300ms ease, transform 300ms ease;
+    transition: transform 300ms ease;
 }
 
 .translate:hover, .microphone:hover {
-    background-color: var(--primary1);
-    color: var(--white);
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .microphone.active {
-    border: 2px solid rgb(0, 129, 86);
+    border: 1px solid var(--border-mic);
     animation: blink 2000ms infinite linear;
 }
 
@@ -45,7 +61,6 @@
 }
 
 .option {
-    background-color: var(--primary1);
     border: 1px solid var(--border);
 }
 
@@ -53,6 +68,6 @@
     background-color: var(--primary2);
 }
 
-.warningMessage.active {
-    color: #a01500;
+.msg.active {
+    opacity: 1;
 }

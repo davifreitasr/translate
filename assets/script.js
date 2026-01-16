@@ -1,9 +1,11 @@
 const customSelect = document.querySelector('.custom-select')
 const language = document.querySelector('.language')
+const icon = document.querySelector('.icon')
 
 // customização do seletor de idioma e rotação do chevron
-document.querySelector('.custom-select').addEventListener('click', () => {
-    document.querySelector('.icon').classList.toggle('rotate')
+document.querySelector('.custom-select').addEventListener('click', (e) => {
+    e.stopPropagation()
+    icon.classList.toggle('rotate')
     customSelect.classList.toggle('open')
 })
 
@@ -16,6 +18,7 @@ customSelect.querySelectorAll('.lang-options').forEach(item => {
 
 document.addEventListener('click', (e) => {
     if (!customSelect.contains(e.target)) {
+        icon.classList.remove('rotate')
         customSelect.classList.remove('open')
     }
 })
@@ -40,21 +43,16 @@ document.querySelector('#translate').addEventListener('click', async () => {
     document.getElementById('inputTranslated').value = data.responseData.translatedText
 })
 
-
-
-
-
-
 // mic mode
 const microphone = document.getElementById('microphone')
 const inputText = document.getElementById('inputText')
-const warningMessage = document.getElementById('warningMessage')
+const msg = document.querySelector('.msg')
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
 if (!SpeechRecognition) {
     microphone.disabled = true
-    alert('Seu navegador não suporta reconhecimento de voz (use o Chrome/Edge)')
+    alert('Seu navegador não suporta reconhecimento de voz (use o Chrome)')
 } else {
     const recognition = new SpeechRecognition()
 
@@ -66,7 +64,6 @@ if (!SpeechRecognition) {
 
     microphone.addEventListener('click', () => {
         if (!listering) {
-            microphone.classList.add('active')
             recognition.start()
         } else {
             recognition.stop()
@@ -87,7 +84,36 @@ if (!SpeechRecognition) {
     }
     recognition.onerror = (e) => {
         microphone.classList.remove('active')
-        warningMessage.style.color = 'red'
-        warningMessage.innerHTML = 'Não foi possível fazer a transcrição de áudio. Tente novamente'
+        msg.classList.add('active')
+        msg.style.color = '#cf3939'
+
+        if (e.error === 'not-allowed') {
+            msg.textContent = 'Permissão do microfone negada'
+        } else if (e.error === 'no-speech') {
+            msg.textContent = 'Nenhuma voz detectada'
+        } else if (e.error === 'audio-capture') {
+            msg.textContent = 'Microfone não encontrado'
+        } else if (e.error === 'network') {
+            msg.textContent = 'Falha na operação'
+        } else {
+            msg.textContent = 'Tente novamente'
+        }
+
+        setTimeout(() => {
+            msg.classList.remove('active')
+        }, 3000)
     }
+}
+
+function copy() {
+    const value = document.getElementById('inputTranslated').value // pega valor do input
+    navigator.clipboard.writeText(value).then(() => { // copia valor
+        msg.classList.add('active')
+        msg.textContent = 'Texto copiado'
+        msg.style.color = '#008156'
+
+        setTimeout(() => {
+            msg.classList.remove('active')
+        }, 3000);
+    })
 }
