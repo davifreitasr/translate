@@ -37,11 +37,6 @@
     border: 1px solid var(--border);
 }
 
-.lang-options {
-    padding: .5rem;
-    cursor: pointer;
-}
-
 .lang-options:hover {
     background-color: var(--primary2);
 }
