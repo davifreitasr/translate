@@ -103,6 +103,10 @@ if (!SpeechRecognition) {
             msg.classList.remove('active')
         }, 3000)
     }
+
+    recognition.onend = () => {
+        microphone.classList.remove('active')
+    }
 }
 
 function copy() {
