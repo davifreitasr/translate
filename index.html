@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" integrity="sha512-9xKTRVabjVeZmc+GUW8GgSmcREDunMM+Dt/GrzchfN8tkwHizc5RP4Ok/MXFFy5rIjJjzhndFScTceq5e6GvVQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="./output.css" rel="stylesheet">
+    <script src="assets/script.js" defer></script>
+    <title>Tradutor</title>
+</head>
+<body>
+    <main>
+        <div class="bg-[#000000f2] flex justify-center items-center w-full h-screen">
+            <div class="bg-gray-800 text-[#f9f9f9] flex flex-col justify-center gap-4 py-12 px-4 w-[90%] md:w-[30%] rounded-md cursor-default">
+                <div class="flex w-full">
+                    <textarea
+                        class="bg-neutral-100 text-neutral-900 w-full p-4 rounded-lg focus:outline-none resize-none"
+                        id="inputText">
+                    </textarea>
+                </div>
+    
+                <div class="flex justify-between items-center w-full">
+                    <div class="w-[70%] relative select">
+                        <div>
+                            <i class="fa-solid fa-chevron-down absolute top-2.5 right-2.5 transition-transform duration-300 ease cursor-pointer icon"></i>
+                        </div>
+
+                        <div class="custom-select flex items-center cursor-pointer">
+                            <div class="language bg-gray-700 w-full p-2 rounded-md select-none">Idioma</div>
+                            <ul class="option">
+                                <li class="lang-options" data-lang="fr">Francês</li>
+                                <li class="lang-options" data-lang="en">Inglês</li>
+                                <li class="lang-options" data-lang="it">Italiano</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <button id="translate" class="translate cursor-pointer">
+                            <img src="/images/traduzir.svg" alt="Translate">
+                        </button>
+                        <button id="microphone" class="microphone cursor-pointer">
+                            <img src="/images/microfone.svg" alt="Microphone">
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="bg-gray-700 flex flex-col gap-4 p-2 rounded-md">
+                    <h3 class="text-gray-400 select-none">Tradução:</h3>
+                    <input
+                        type="text"
+                        class="placeholder:text-[#f9f9f9] focus:outline-none" id="inputTranslated">
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
