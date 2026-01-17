@@ -1,10 +1,12 @@
+const inputText = document.getElementById('inputText')
 const customSelect = document.querySelector('.custom-select')
 const language = document.querySelector('.language')
+const translate = document.getElementById('translate')
 const icon = document.querySelector('.icon')
+const msg = document.querySelector('.msg')
 
 // customização do seletor de idioma e rotação do chevron
-document.querySelector('.custom-select').addEventListener('click', (e) => {
-    e.stopPropagation()
+document.querySelector('.custom-select').addEventListener('click', () => {
     icon.classList.toggle('rotate')
     customSelect.classList.toggle('open')
 })
@@ -24,7 +26,7 @@ document.addEventListener('click', (e) => {
 })
 
 // tradução
-let selectedLang = 'en'
+let selectedLang = null
 
 document.querySelectorAll('.lang-options').forEach(option => {
     option.addEventListener('click', () => {
@@ -33,108 +35,147 @@ document.querySelectorAll('.lang-options').forEach(option => {
 })
 
 document.querySelector('#translate').addEventListener('click', async () => {
-    const text = document.querySelector('#inputText').value
+    const input = document.querySelector('#inputText').value.trim()
+    
+    if (!selectedLang) {
+        msg.classList.add('active')
+        msg.textContent = 'Selecione um idioma'
+        msg.style.color = '#cf3939'
+        customSelect.style.border = '1px solid #cf3939'
+        customSelect.style.borderRadius = '6px'
 
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=pt|${selectedLang}`
+        setTimeout(() => {
+            msg.classList.remove('active')
+            customSelect.style.border = ''
+        }, 3000)
+        return
+    }
 
-    const response = await fetch(url)
+        
+        if (input.length === 0) {
+            msg.classList.add('active')
+            msg.textContent = 'Digite um texto'
+            msg.style.color = '#cf3939'
+            inputText.style.border = '1px solid #cf3939'
+
+            setTimeout(() => {
+                msg.classList.remove('active')
+                inputText.style.border = ''
+            }, 3000)
+            return
+        }
+
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input.value)}&langpair=pt|${selectedLang}`
+    const response = await fetch(url)    
     const data = await response.json()
-
+    
     document.getElementById('inputTranslated').value = data.responseData.translatedText
 })
 
 // mic mode
 const microphone = document.getElementById('microphone')
-const inputText = document.getElementById('inputText')
-const msg = document.querySelector('.msg')
 const copyIcon = document.querySelector('.copy')
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+
+let recognition
+let listening = false
 
 if (!SpeechRecognition) {
     microphone.disabled = true
     alert('Seu navegador não suporta reconhecimento de voz (use o Chrome)')
 } else {
-    const recognition = new SpeechRecognition()
-
+    recognition = new SpeechRecognition()
     recognition.lang = 'pt'
-    recognition.interimResultsResults = true
-    recognition.continuous = false
+    recognition.continuous = true
+}
 
-    let listering = false
-
-    microphone.addEventListener('click', () => {
-        if (!listering) {
-            recognition.start()
-        } else {
-            recognition.stop()
-        }
-    })
-
-    recognition.onstart = () => {
-        listering = true
-        microphone.classList.add('active')
+microphone.addEventListener('click', () => {
+    if (!listening) {
+        recognition.start()
+    } else {
+        recognition.stop()
     }
+})
 
-    recognition.onresult = (e) => {
-        let transcript = ''
-        for (let i = e.resultIndex; i < e.results.length; i++) {
-            transcript += e.results[i][0].transcript
-        }
-        inputText.value = transcript.trim()
+recognition.onstart = () => {
+    listening = true
+    microphone.classList.add('active')
+}
+
+recognition.onresult = (e) => {
+    let transcript = ''
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+        transcript += e.results[i][0].transcript
     }
-    recognition.onerror = (e) => {
-        microphone.classList.remove('active')
-        msg.classList.add('active')
-        msg.style.color = '#cf3939'
+    inputText.value = transcript.trim()
+}
 
-        if (e.error === 'not-allowed') {
+recognition.onerror = (e) => {
+    microphone.classList.remove('active')
+    microphone.style.border = '1px solid #cf3939'
+    listening = false
+    msg.classList.add('active')
+    msg.style.color = '#cf3939'
+
+    switch (e.error) {
+        case 'not-allowed':
             msg.textContent = 'Permissão do microfone negada'
-        } else if (e.error === 'no-speech') {
+            break
+        case 'no-speech':
             msg.textContent = 'Nenhuma voz detectada'
-        } else if (e.error === 'audio-capture') {
+            break
+        case 'audio-capture':
             msg.textContent = 'Microfone não encontrado'
-        } else if (e.error === 'network') {
+            break
+        case 'network':
             msg.textContent = 'Falha na operação'
-        } else {
-            msg.textContent = 'Tente novamente'
-        }
-
-        setTimeout(() => {
-            msg.classList.remove('active')
-        }, 3000)
+            break
+        default: msg.textContent = 'Tente novamente' 
     }
 
-    recognition.onend = () => {
-        microphone.classList.remove('active')
-    }
+    setTimeout(() => {
+        msg.classList.remove('active')
+        microphone.style.border = ''
+    }, 3000);
+}
+
+recognition.onend = () => {
+    listening = false
+    microphone.classList.remove('active')
 }
 
 function copy() {
     const inputTranslated = document.getElementById('inputTranslated').value // pega valor do input
+    const borderTop = document.querySelector('.containerTranslate')
+    const borderBottom = document.querySelector('.containerTranslated')
 
     if (!inputTranslated) { // caso o textarea esteja vazio...
-            msg.classList.add('active')
-            msg.style.color = '#cf3939'
-            msg.textContent = 'Vazio'
-            copyIcon.style.color = '#cf3939'
-            
-            setTimeout(() => {
-                msg.classList.remove('active')
-                copyIcon.style.color = ''
-            }, 2000)
-            return
+        msg.classList.add('active')
+        msg.style.color = '#cf3939'
+        borderTop.classList.add('danger')
+        msg.textContent = 'Digite algo'
+        copyIcon.style.color = '#cf3939'
+
+        setTimeout(() => {
+            msg.classList.remove('active')
+            borderTop.classList.remove('danger')
+            copyIcon.style.color = ''
+        }, 3000)
+        return
     }
-    
+
     navigator.clipboard.writeText(inputTranslated).then(() => { // copia valor do textarea
         msg.classList.add('active')
         msg.textContent = 'Texto copiado'
         copyIcon.style.color = '#008156'
         msg.style.color = '#008156'
+        borderBottom.classList.add('sucess')
 
         setTimeout(() => {
             msg.classList.remove('active')
             copyIcon.style.color = ''
+            borderBottom.classList.remove('sucess')
         }, 2000);
     })
 }

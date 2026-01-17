@@ -11,6 +11,7 @@
     --color-gray-700: oklch(37.3% 0.034 259.733);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
+    --color-gray-950: oklch(13% 0.028 261.692);
     --spacing: 0.25rem;
     --text-sm: 0.875rem;
     --text-sm--line-height: calc(1.25 / 0.875);
@@ -307,6 +308,9 @@
   .bg-gray-800 {
     background-color: var(--color-gray-800);
   }
+  .bg-gray-900 {
+    background-color: var(--color-gray-900);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -405,6 +409,8 @@
   --white: #ffffff;
   --border: #99A1AF;
   --border-mic: #008156;
+  --border-sucess: #065b3f;
+  --border-danger: #cf3939;
 }
 ::selection {
   background-color: var(--white);
@@ -460,34 +466,8 @@ body {
   min-height: 100dvh;
   overflow: hidden;
 }
-.stars, .stars::before, .stars::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-repeat: repeat;
-  pointer-events: none;
-}
-.stars {
-  background-image: radial-gradient(1px 1px at 20% 30%, var(--white) 50%, transparent 51%), radial-gradient(1px 1px at 80% 70%, var(--white) 50%, transparent 51%), radial-gradient(1px 1px at 50% 50%, var(--white) 50%, transparent 51%);
-  position: fixed;
-  inset: -100% 0 0 0;
-  background-size: 200px 200px;
-  opacity: .6;
-  animation: moveStars 60s linear infinite;
-  pointer-events: none;
-  will-change: transform;
-}
-.stars::before {
-  background-image: radial-gradient(1.5px 1.5px at 10% 20%, var(--white) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 90% 80%, var(--white) 50%, transparent 51%);
-  background-size: 300px 300px;
-  opacity: .8;
-  animation: moveStars 90s linear infinite reverse;
-}
-.stars::after {
-  background-image: radial-gradient(2px 2px at 30% 40%, var(--white) 50%, transparent 51%), radial-gradient(2px 2px at 70% 60%, var(--white) 50%, transparent 51%);
-  background-size: 400px 400px;
-  opacity: 1;
-  animation: moveStars 120s linear infinite, twinkle 4s ease-in-out infinite alternate;
+.custom-select.danger {
+  border: 1px solid var(--border-danger);
 }
 .translate, .microphone {
   padding: .5rem;
@@ -513,6 +493,12 @@ body {
 }
 .lang-options:hover {
   background-color: var(--primary1);
+}
+.containerTranslate.sucess, .containerTranslated.sucess {
+  border: 1px solid var(--border-sucess);
+}
+.containerTranslate.danger, .containerTranslated.danger {
+  border: 1px solid var(--border-danger);
 }
 .msg.active {
   opacity: 1;
