@@ -65,7 +65,7 @@ document.querySelector('#translate').addEventListener('click', async () => {
             return
         }
 
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input.value)}&langpair=pt|${selectedLang}`
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=pt|${selectedLang}`
     const response = await fetch(url)    
     const data = await response.json()
     
