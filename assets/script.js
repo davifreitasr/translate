@@ -117,9 +117,11 @@ function copy() {
             msg.classList.add('active')
             msg.style.color = '#cf3939'
             msg.textContent = 'Vazio'
+            copyIcon.style.color = '#cf3939'
             
             setTimeout(() => {
                 msg.classList.remove('active')
+                copyIcon.style.color = ''
             }, 2000)
             return
     }
