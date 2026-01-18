@@ -2,6 +2,7 @@ const inputText = document.getElementById('inputText')
 const customSelect = document.querySelector('.custom-select')
 const language = document.querySelector('.language')
 const translate = document.getElementById('translate')
+const inputTranslated = document.getElementById('inputTranslated')
 const icon = document.querySelector('.icon')
 const msg = document.querySelector('.msg')
 
@@ -41,29 +42,28 @@ document.querySelector('#translate').addEventListener('click', async () => {
         msg.classList.add('active')
         msg.textContent = 'Selecione um idioma'
         msg.style.color = '#cf3939'
-        customSelect.style.border = '1px solid #cf3939'
-        customSelect.style.borderRadius = '6px'
+        customSelect.style.borderColor = '#cf3939'
+        
 
         setTimeout(() => {
             msg.classList.remove('active')
-            customSelect.style.border = ''
+            customSelect.style.borderColor = ''
         }, 3000)
         return
     }
 
-        
-        if (input.length === 0) {
-            msg.classList.add('active')
-            msg.textContent = 'Digite um texto'
-            msg.style.color = '#cf3939'
-            inputText.style.border = '1px solid #cf3939'
+    if (input.length === 0) {
+        msg.classList.add('active')
+        msg.textContent = 'Digite algo'
+        msg.style.color = '#cf3939'
+        inputText.style.borderColor = '#cf3939'
 
-            setTimeout(() => {
-                msg.classList.remove('active')
-                inputText.style.border = ''
-            }, 3000)
-            return
-        }
+        setTimeout(() => {
+            msg.classList.remove('active')
+            inputText.style.borderColor = ''
+        }, 3000)
+        return
+    }
 
     const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=pt|${selectedLang}`
     const response = await fetch(url)    
@@ -72,9 +72,15 @@ document.querySelector('#translate').addEventListener('click', async () => {
     document.getElementById('inputTranslated').value = data.responseData.translatedText
 })
 
+document.querySelector('.clear').addEventListener('click', () => {
+    inputText.value = '' // limpa primeiro input
+    inputTranslated.value = '' // limpa segundo input
+})
+
 // mic mode
 const microphone = document.getElementById('microphone')
 const copyIcon = document.querySelector('.copy')
+const checkedIcon = document.querySelector('.checked')
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
@@ -168,13 +174,14 @@ function copy() {
     navigator.clipboard.writeText(inputTranslated).then(() => { // copia valor do textarea
         msg.classList.add('active')
         msg.textContent = 'Texto copiado'
-        copyIcon.style.color = '#008156'
+        copyIcon.classList.add('hidden')
+        checkedIcon.classList.add('show')
         msg.style.color = '#008156'
-        borderBottom.classList.add('sucess')
 
         setTimeout(() => {
             msg.classList.remove('active')
-            copyIcon.style.color = ''
+            copyIcon.classList.remove('hidden')
+            checkedIcon.classList.remove('show')
             borderBottom.classList.remove('sucess')
         }, 2000);
     })

@@ -7,13 +7,12 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-700: oklch(37.3% 0.034 259.733);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
     --spacing: 0.25rem;
-    --text-sm: 0.875rem;
-    --text-sm--line-height: calc(1.25 / 0.875);
     --text-lg: 1.125rem;
     --text-lg--line-height: calc(1.75 / 1.125);
     --radius-md: 0.375rem;
@@ -183,11 +182,8 @@
   .relative {
     position: relative;
   }
-  .top-3 {
-    top: calc(var(--spacing) * 3);
-  }
-  .top-12 {
-    top: calc(var(--spacing) * 12);
+  .top-2 {
+    top: calc(var(--spacing) * 2);
   }
   .top-12\.5 {
     top: calc(var(--spacing) * 12.5);
@@ -198,14 +194,17 @@
   .right-2 {
     right: calc(var(--spacing) * 2);
   }
-  .-bottom-2 {
-    bottom: calc(var(--spacing) * -2);
+  .right-3 {
+    right: calc(var(--spacing) * 3);
   }
-  .-bottom-2\.5 {
-    bottom: calc(var(--spacing) * -2.5);
+  .-bottom-4 {
+    bottom: calc(var(--spacing) * -4);
   }
   .-bottom-16 {
     bottom: calc(var(--spacing) * -16);
+  }
+  .bottom-1 {
+    bottom: calc(var(--spacing) * 1);
   }
   .z-10 {
     z-index: 10;
@@ -218,9 +217,6 @@
   }
   .hidden {
     display: none;
-  }
-  .table {
-    display: table;
   }
   .h-14 {
     height: calc(var(--spacing) * 14);
@@ -252,20 +248,11 @@
   .w-full {
     width: 100%;
   }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .transform {
-    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
-  }
   .cursor-default {
     cursor: default;
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .resize-none {
     resize: none;
@@ -347,18 +334,11 @@
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
   }
-  .text-sm {
-    font-size: var(--text-sm);
-    line-height: var(--tw-leading, var(--text-sm--line-height));
-  }
   .text-\[\#f9f9f9\] {
     color: #f9f9f9;
   }
   .text-gray-400 {
     color: var(--color-gray-400);
-  }
-  .underline {
-    text-decoration-line: underline;
   }
   .opacity-0 {
     opacity: 0%;
@@ -372,15 +352,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       --tw-shadow-color: color-mix(in oklab, var(--color-gray-900) var(--tw-shadow-alpha), transparent);
     }
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
-  }
-  .transition {
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
   .transition-colors {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
@@ -396,6 +367,10 @@
     transition-property: transform, translate, scale, rotate;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
   }
   .duration-300 {
     --tw-duration: 300ms;
@@ -418,6 +393,20 @@
       color: var(--color-gray-400);
     }
   }
+  .hover\:text-\[\#008156\] {
+    &:hover {
+      @media (hover: hover) {
+        color: #008156;
+      }
+    }
+  }
+  .hover\:text-blue-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-blue-500);
+      }
+    }
+  }
   .focus\:outline-none {
     &:focus {
       --tw-outline-style: none;
@@ -435,9 +424,10 @@
   --primary1: #465469;
   --primary2: #3a4557;
   --scrollbar-thumb: #303b4e;
-  --white: #ffffff;
   --border: #99A1AF;
+  --white: #ffffff;
   --border-mic: #008156;
+  --checked: #0c9164;
   --border-sucess: #065b3f;
   --border-danger: #cf3939;
 }
@@ -457,33 +447,12 @@
 * {
   box-sizing: border-box;
 }
-@media (prefers-reduced-motion: reduce) {
-  .stars {
-    animation: none;
-  }
-}
-@keyframes moveStars {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(50%);
-  }
-}
-@keyframes twinkle {
-  from {
-    opacity: .6;
-  }
-  to {
-    opacity: 1;
-  }
-}
 @keyframes blink {
   0% {
     opacity: .3;
   }
   50% {
-    opacity: 1;
+    opacity: .9;
   }
   100% {
     opacity: .3;
@@ -508,8 +477,8 @@ body {
   transform: scale(1.08);
 }
 .microphone.active {
-  border: 1px solid var(--border-mic);
-  animation: blink 2000ms infinite linear;
+  border-color: var(--border-mic);
+  animation: blink 3000ms linear infinite;
 }
 .icon.rotate {
   transform: rotate(180deg);
@@ -524,33 +493,20 @@ body {
   background-color: var(--primary1);
 }
 .containerTranslate.sucess, .containerTranslated.sucess {
-  border: 1px solid var(--border-sucess);
+  border-color: var(--border-sucess);
 }
 .containerTranslate.danger, .containerTranslated.danger {
-  border: 1px solid var(--border-danger);
+  border-color: var(--border-danger);
+}
+.copy.hidden {
+  display: none;
+}
+.checked.show {
+  display: block;
+  color: var(--checked);
 }
 .msg.active {
   opacity: 1;
-}
-@property --tw-rotate-x {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-rotate-y {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-rotate-z {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-skew-x {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-skew-y {
-  syntax: "*";
-  inherits: false;
 }
 @property --tw-border-style {
   syntax: "*";
@@ -622,11 +578,6 @@ body {
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -638,11 +589,6 @@ body {
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
-      --tw-rotate-x: initial;
-      --tw-rotate-y: initial;
-      --tw-rotate-z: initial;
-      --tw-skew-x: initial;
-      --tw-skew-y: initial;
       --tw-border-style: solid;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
@@ -658,7 +604,6 @@ body {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-duration: initial;
       --tw-ease: initial;
     }

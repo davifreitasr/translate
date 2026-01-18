@@ -5,9 +5,10 @@
     --primary1: #465469;
     --primary2: #3a4557;
     --scrollbar-thumb: #303b4e;
-    --white: #ffffff;
     --border: #99A1AF;
+    --white: #ffffff;
     --border-mic: #008156;
+    --checked: #0c9164;
     --border-sucess: #065b3f;
     --border-danger: #cf3939;
 }
@@ -33,6 +34,12 @@
     box-sizing: border-box;
 }
 
+@keyframes blink {
+    0% { opacity: .3; }
+    50% { opacity: .9; }
+    100% { opacity: .3; }
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--background);
@@ -56,8 +63,8 @@ body {
 }
 
 .microphone.active {
-    border: 1px solid var(--border-mic);
-    animation: blink 2000ms infinite linear;
+    border-color: var(--border-mic);
+    animation: blink 3000ms linear infinite;
 }
 
 .icon.rotate {
@@ -77,11 +84,20 @@ body {
 }
 
 .containerTranslate.sucess, .containerTranslated.sucess {
-    border: 1px solid var(--border-sucess);
+    border-color: var(--border-sucess);
 }
 
 .containerTranslate.danger, .containerTranslated.danger {
-    border: 1px solid var(--border-danger);
+    border-color: var(--border-danger);
+}
+
+.copy.hidden {
+    display: none;
+}
+
+.checked.show {
+    display: block;
+    color: var(--checked);
 }
 
 .msg.active {
