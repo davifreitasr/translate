@@ -1,17 +1,18 @@
 const inputText = document.getElementById('inputText')
-const customSelect = document.querySelector('.custom-select')
-const language = document.querySelector('.language')
 const translate = document.getElementById('translate')
 const inputTranslated = document.getElementById('inputTranslated')
+const customSelect = document.querySelector('.custom-select')
+const language = document.querySelector('.language')
 const icon = document.querySelector('.icon')
 const msg = document.querySelector('.msg')
 
 // customização do seletor de idioma e rotação do chevron
-document.querySelector('.custom-select').addEventListener('click', () => {
+customSelect.addEventListener('click', () => {
     icon.classList.toggle('rotate')
     customSelect.classList.toggle('open')
 })
 
+// customização do nome visível no seletor de idioma
 customSelect.querySelectorAll('.lang-options').forEach(item => {
     item.addEventListener('click', () => {
         language.textContent = item.textContent
@@ -19,6 +20,7 @@ customSelect.querySelectorAll('.lang-options').forEach(item => {
     })
 })
 
+// fechar o seletor de idioma ao clicar fora...
 document.addEventListener('click', (e) => {
     if (!customSelect.contains(e.target)) {
         icon.classList.remove('rotate')
@@ -29,22 +31,22 @@ document.addEventListener('click', (e) => {
 // tradução
 let selectedLang = null
 
-document.querySelectorAll('.lang-options').forEach(option => {
-    option.addEventListener('click', () => {
-        selectedLang = option.dataset.lang.toLowerCase()
+document.querySelectorAll('.lang-options').forEach(option => { // pega todos os elementos
+    option.addEventListener('click', () => {                   // adiciona evento de clique para todos os elementos
+        selectedLang = option.dataset.lang.toLowerCase()       // 
     })
 })
 
-document.querySelector('#translate').addEventListener('click', async () => {
-    const input = document.querySelector('#inputText').value.trim()
+// 
+translate.addEventListener('click', async () => {
+    const input = document.getElementById('inputText').value.trim()
     
-    if (!selectedLang) {
+    if (!selectedLang) { // caso nenhum elemento seja selecionado...
         msg.classList.add('active')
         msg.textContent = 'Selecione um idioma'
         msg.style.color = '#cf3939'
         customSelect.style.borderColor = '#cf3939'
         
-
         setTimeout(() => {
             msg.classList.remove('active')
             customSelect.style.borderColor = ''
@@ -52,7 +54,7 @@ document.querySelector('#translate').addEventListener('click', async () => {
         return
     }
 
-    if (input.length === 0) {
+    if (input.length === 0) { // caso nada seja digitado no input...
         msg.classList.add('active')
         msg.textContent = 'Digite algo'
         msg.style.color = '#cf3939'
@@ -69,12 +71,13 @@ document.querySelector('#translate').addEventListener('click', async () => {
     const response = await fetch(url)    
     const data = await response.json()
     
-    document.getElementById('inputTranslated').value = data.responseData.translatedText
+    inputTranslated.value = data.responseData.translatedText
 })
 
+// limpar inputs
 document.querySelector('.clear').addEventListener('click', () => {
-    inputText.value = '' // limpa primeiro input
-    inputTranslated.value = '' // limpa segundo input
+    inputText.value = ''
+    inputTranslated.value = ''
 })
 
 // mic mode
@@ -88,7 +91,7 @@ let recognition
 let listening = false
 
 if (!SpeechRecognition) {
-    microphone.disabled = true
+    microphone.disabled = true // se o navegador não tiver suporte para rec. de voz...
     alert('Seu navegador não suporta reconhecimento de voz (use o Chrome)')
 } else {
     recognition = new SpeechRecognition()
@@ -119,7 +122,7 @@ recognition.onresult = (e) => {
 
 recognition.onerror = (e) => {
     microphone.classList.remove('active')
-    microphone.style.border = '1px solid #cf3939'
+    microphone.style.borderColor = '#cf3939'
     listening = false
     msg.classList.add('active')
     msg.style.color = '#cf3939'
@@ -137,12 +140,12 @@ recognition.onerror = (e) => {
         case 'network':
             msg.textContent = 'Falha na operação'
             break
-        default: msg.textContent = 'Tente novamente' 
+        default: msg.textContent = 'Tente novamente'
     }
 
     setTimeout(() => {
         msg.classList.remove('active')
-        microphone.style.border = ''
+        microphone.style.borderColor = ''
     }, 3000);
 }
 
@@ -151,16 +154,17 @@ recognition.onend = () => {
     microphone.classList.remove('active')
 }
 
+// copiar conteúdo do input
 function copy() {
-    const inputTranslated = document.getElementById('inputTranslated').value // pega valor do input
+    const input = document.getElementById('inputTranslated').value // pega valor do input
     const borderTop = document.querySelector('.containerTranslate')
     const borderBottom = document.querySelector('.containerTranslated')
 
-    if (!inputTranslated) { // caso o textarea esteja vazio...
+    if (!input) { // caso o input esteja vazio...
         msg.classList.add('active')
+        msg.textContent = 'Digite algo'
         msg.style.color = '#cf3939'
         borderTop.classList.add('danger')
-        msg.textContent = 'Digite algo'
         copyIcon.style.color = '#cf3939'
 
         setTimeout(() => {
@@ -171,9 +175,9 @@ function copy() {
         return
     }
 
-    navigator.clipboard.writeText(inputTranslated).then(() => { // copia valor do textarea
+    navigator.clipboard.writeText(input).then(() => { // copia valor do input
         msg.classList.add('active')
-        msg.textContent = 'Texto copiado'
+        msg.textContent = 'Copiado'
         copyIcon.classList.add('hidden')
         checkedIcon.classList.add('show')
         msg.style.color = '#008156'
